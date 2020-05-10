@@ -36,8 +36,17 @@ class User extends Model {
   }
 
   static get hidden () {
-    return ['password']
+    return [
+      'password',
+      'created_at',
+      'updated_at'
+    ]
   }
+
+  doctorInfo () {
+    return this.hasOne('App/Models/Doctor/Doctor', 'id', 'user_id')
+  }
+
 }
 
 module.exports = User

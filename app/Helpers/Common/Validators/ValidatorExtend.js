@@ -15,8 +15,22 @@ const phone = async (data, field, message, args, get) => {
         throw message
     }
 }
+
+const image = async (data, field, message, args, get) => {
+    const value = get(data, field)
+    if (!value) {
+        return
+    }
+
+    const imageRegex = /([a-zA-Z0-9\s_\\.\-\(\):])+(.png|.jpg)$/
+    if( !imageRegex.test(value) ){
+        throw message
+    }
+}
+
   
 
 module.exports = {
-    phone
+    phone,
+    image
 }

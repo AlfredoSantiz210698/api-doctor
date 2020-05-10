@@ -4,21 +4,9 @@
 
 'use strict'
 
-const UserModel = use('App/Models/User')
 const DoctorModel = use('App/Models/Doctor/Doctor')
 
 class Doctor {
-
-    /**
-     * Busca el usuario doctor.
-     * @param {int} uid 
-     */
-    static async find(uid) {
-        return await UserModel.query().where({
-            uid:  uid,
-            role_id: 1
-        }).first()
-    }
 
     /**
      * Crea un nuevo doctor.
@@ -30,6 +18,40 @@ class Doctor {
             degree_id: form.degree_id,
             institution: form.institution
         })
+    }
+
+    /**
+     * Actualiza los datos del doctor.
+     */
+    static async update(userId, form) {
+        let dataUpdateDoctor = {};
+
+        /**
+         * Verifica si el usuario ha envíado datos para actualizar.
+         */
+        if(form.photo !== undefined){
+            dataUpdateDoctor.photo = form.photo
+        }
+
+        if(form.semblance !== undefined){
+            dataUpdateDoctor.semblance = form.semblance
+        }
+
+        const doctor = await DoctorModel.findBy('user_id', userId)
+
+        /**
+         * Verifica si hay datos para actualizar. Principalmente se hace 
+         * esta verificación para no hacer peticiones a la base de datos sin
+         * actualizar algo.
+         */
+        if(  Object.keys(dataUpdateDoctor).length === 0 ){
+            return doctor;
+        }
+
+        doctor.merge(dataUpdateDoctor)
+        await doctor.save()
+
+        return doctor;
     }
     
 }

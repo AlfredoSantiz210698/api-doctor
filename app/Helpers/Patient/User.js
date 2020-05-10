@@ -5,8 +5,19 @@
 'use strict'
 
 const UserModel = use('App/Models/User')
+const roleId = 2;
 
 class User {
+
+    /**
+     * Busca un usuario en específico.
+     */
+    static async find(uid) {
+        return await UserModel.query().where({
+            uid:  uid,
+            role_id: roleId
+        }).first()
+    }
 
     /**
      * Crea un nuevo usuario.
@@ -18,7 +29,7 @@ class User {
             password: form.password,
             full_name: form.full_name,
             phone: form.phone,
-            role_id: form.role_id
+            role_id: roleId
         })
     }
     

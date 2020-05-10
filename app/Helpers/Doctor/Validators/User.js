@@ -6,7 +6,17 @@
 
 const { validate } = use('Validator')
 
-class Doctor {
+class User {
+
+    static login(form){
+        return validate(form, {
+            uid: 'required',
+	        password: 'required',
+        },{
+            'uid.required': 'Cédula requerida.',
+            'password.required': 'Contraseña requerida.',
+        })
+    }
 
     static signup(form){
         return validate(form, {
@@ -33,15 +43,7 @@ class Doctor {
         })
     }
 
-    static login(form){
-        return validate(form, {
-            uid: 'required',
-	        password: 'required',
-        },{
-            'uid.required': 'Cédula requerida.',
-            'password.required': 'Contraseña requerida.',
-        })
-    }
+    
 }
 
-module.exports = Doctor
+module.exports = User
