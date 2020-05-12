@@ -11,17 +11,21 @@ const Doctor = use('App/Helpers/Doctor/Doctor')
 class DoctorController {
 
     async update ({ request, response, auth }) {
-        const form = request.all();
 
-        const formValidator = await doctorValidator.update( form )
-        if ( formValidator.fails() ) {
+        const inputs = request.only([
+            'photo',
+            'semblance'
+        ])
+
+        const inputsValidator = await doctorValidator.update( inputs )
+        if ( inputsValidator.fails() ) {
             return response.status(400).json({
-                message: formValidator.messages()[0].message,
-                validator: formValidator.messages()
+                message: inputsValidator.messages()[0].message,
+                validator: inputsValidator.messages()
             })
         }
 
-        const updatedDoctor = await Doctor.update(auth.user.id, form);
+        const updatedDoctor = await Doctor.update(auth.user.id, inputs);
 
         return response.status(200).json({
             ...{

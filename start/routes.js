@@ -43,19 +43,34 @@ Route.group(() => {
  *  / _` |/ _ \ / __| __/ _ \| '__/ __|
  * | (_| | (_) | (__| || (_) | |  \__ \
  *  \__,_|\___/ \___|\__\___/|_|  |___/
+ * 
+ * Endpoints únicamente accesibles para los doctores (role_id = 1)
  */
 
- /**
-  * Endpoints únicamente accesibles para los doctores (role_id = 1)
-  */
 Route.group(() => {
   
   Route.get('/msg', () => {
     return { message: 'Doctors' }
   })
 
+  /**
+   * Perfil.
+   */
   Route.get('/profile', 'Doctor/ProfileController.get')
   Route.put('/profile/doctor', 'Doctor/DoctorController.update')
+
+  /**
+   * Redes sociales.
+   */
+  Route.get('/social_network', 'Doctor/SocialNetworkController.get')
+  Route.post('/social_network', 'Doctor/SocialNetworkController.create')
+  Route.put('/social_network', 'Doctor/SocialNetworkController.update')
+
+  /**
+   * Clínicas.
+   */
+  Route.post('/clinics', 'Doctor/ClinicController.create')
+  Route.put('/clinics', 'Doctor/ClinicController.update')
 
 }).prefix('api/v1/doctors').middleware(['doctor', 'auth:jwt'])
 
@@ -67,11 +82,10 @@ Route.group(() => {
  * | |_) | (_| | |_| |  __/ | | | |_\__ \
  * | .__/ \__,_|\__|_|\___|_| |_|\__|___/
  * |_|                                   
+ * 
+ * Endpoints únicamente accesibles para los pacientes (role_id = 2)
+ * 
  */
-
-/**
-* Endpoints únicamente accesibles para los pacientes (role_id = 2)
-*/
 
 // Route.group(() => {
 //   // Route.get('/', 'Doctor/DoctorController.getAll')
@@ -83,6 +97,9 @@ Route.group(() => {
     return { message: 'Patient' }
   })
 
+  /**
+   * Perfil.
+   */
   Route.get('/profile', 'Patient/ProfileController.get')  
 
 }).prefix('api/v1/patients').middleware(['patient', 'auth:jwt'])

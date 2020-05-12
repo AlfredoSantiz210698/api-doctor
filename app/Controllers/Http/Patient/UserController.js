@@ -13,27 +13,30 @@ const Dummy = use('App/Helpers/Common/Dummy')
 class UserController {
 
     async login ({ request, response, auth }) {
-        const form = request.all()
+        const inputs = request.only([
+            'uid',
+            'password'
+        ])
 
         /**
          * Valida los parámetros necesarios para crear el doctor.
          */
-        const formValidator = await patientValidator.login( form )
-        if ( formValidator.fails() ) {
+        const inputsValidator = await patientValidator.login( inputs )
+        if ( inputsValidator.fails() ) {
             return response.status(400).json({
-                message: formValidator.messages()[0].message,
-                validator: formValidator.messages()
+                message: inputsValidator.messages()[0].message,
+                validator: inputsValidator.messages()
             })
         }
 
-        const token = await Dummy.getAuthToken(auth, form.uid, form.password)
+        const token = await Dummy.getAuthToken(auth, inputs.uid, inputs.password)
         if( !token ){
             return response.status(400).json({
                 message: userMessages.emailOrPasswordNotFound
             })
         }
 
-        const user = await User.find(form.uid);
+        const user = await User.find(inputs.uid);
         if( !user ){
             return response.status(400).json({
                 message: userMessages.emailNotExists,
@@ -50,29 +53,35 @@ class UserController {
     }
 
     async signup ({ request, response, auth }) {
-        const form = request.all()
 
+        const inputs = request.only([
+            'uid',
+            'password',
+            'full_name',
+            'phone'
+        ])
+        
         /**
          * Valida los parámetros necesarios para crear el doctor.
          */
-        const formValidator = await patientValidator.signup( form )
-        if ( formValidator.fails() ) {
+        const inputsValidator = await patientValidator.signup( inputs )
+        if ( inputsValidator.fails() ) {
             return response.status(400).json({
-                message: formValidator.messages()[0].message,
-                validator: formValidator.messages()
+                message: inputsValidator.messages()[0].message,
+                validator: inputsValidator.messages()
             })
         }
 
         /**
          * Crea el usuario.
          */
-        form.full_name = form.full_name.toUpperCase().trim()
-        const user = await User.create(form)
+        inputs.full_name = inputs.full_name.toUpperCase().trim()
+        const user = await User.create(inputs)
 
         /**
          * Genera el token de acceso.
          */
-        const token = await auth.attempt(form.uid, form.password)
+        const token = await auth.attempt(inputs.uid, inputs.password)
 
         return response.status(201).json({
             message: userMessages.accountCreatedSuccessful,

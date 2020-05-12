@@ -8,6 +8,10 @@ const DoctorModel = use('App/Models/Doctor/Doctor')
 
 class Doctor {
 
+    static async findByUserId( userId ){
+        return await DoctorModel.findBy('user_id', userId);
+    }
+
     /**
      * Crea un nuevo doctor.
      * @param {Object} form Atributos del doctor.
@@ -23,32 +27,18 @@ class Doctor {
     /**
      * Actualiza los datos del doctor.
      */
-    static async update(userId, form) {
-        let dataUpdateDoctor = {};
-
-        /**
-         * Verifica si el usuario ha envíado datos para actualizar.
-         */
-        if(form.photo !== undefined){
-            dataUpdateDoctor.photo = form.photo
-        }
-
-        if(form.semblance !== undefined){
-            dataUpdateDoctor.semblance = form.semblance
-        }
+    static async update(userId, inputs) {
 
         const doctor = await DoctorModel.findBy('user_id', userId)
 
         /**
-         * Verifica si hay datos para actualizar. Principalmente se hace 
-         * esta verificación para no hacer peticiones a la base de datos sin
-         * actualizar algo.
+         * Verifica si hay datos para actualizar para evitar peticiones a la base de datos.
          */
-        if(  Object.keys(dataUpdateDoctor).length === 0 ){
+        if(  Object.keys(inputs).length === 0 ){
             return doctor;
         }
 
-        doctor.merge(dataUpdateDoctor)
+        doctor.merge(inputs)
         await doctor.save()
 
         return doctor;

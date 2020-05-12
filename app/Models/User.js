@@ -43,7 +43,7 @@ class User extends Model {
     ]
   }
 
-  doctorInfo () {
+  doctor () {
     return this.hasOne('App/Models/Doctor/Doctor', 'id', 'user_id')
   }
 

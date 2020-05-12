@@ -39,7 +39,7 @@ class User {
             'phone.required': 'Teléfono requerido.',
             'phone.min': 'El teléfono debe tener al menos 10 dígitos.',
             'phone.max': 'Los dígitos del teléfono supera el tamaño permitido.',
-            'phone.phone': 'El teléfono no cumple con los criterios requeridos.'
+            'phone.phone': 'El formato del teléfono no cumple con los criterios requeridos.'
         })
     }
 

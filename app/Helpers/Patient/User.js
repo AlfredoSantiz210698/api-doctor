@@ -21,16 +21,12 @@ class User {
 
     /**
      * Crea un nuevo usuario.
-     * @param {Object} form Atributos del usuario.
+     * @param {Object} inputs Atributos del usuario.
      */
-    static async create( form ){
-        return await UserModel.create({
-            uid: form.uid,
-            password: form.password,
-            full_name: form.full_name,
-            phone: form.phone,
-            role_id: roleId
-        })
+    static async create( inputs ){
+        inputs.role_id = roleId;
+
+        return await UserModel.create( inputs )
     }
     
 }

@@ -18,12 +18,15 @@ const Dummy = use('App/Helpers/Common/Dummy')
 class UserController {
 
     async login ({ request, response, auth }) {
-        const form = request.all()
+        const inputs = request.only([
+            'uid',
+            'password'
+        ])
 
         /**
          * Valida los parámetros necesarios para crear el doctor.
          */
-        const formValidator = await userValidator.login( form )
+        const formValidator = await userValidator.login( inputs )
         if ( formValidator.fails() ) {
             return response.status(400).json({
                 message: formValidator.messages()[0].message,
@@ -31,14 +34,14 @@ class UserController {
             })
         }
 
-        const token = await Dummy.getAuthToken(auth, form.uid, form.password)
+        const token = await Dummy.getAuthToken(auth, inputs.uid, inputs.password)
         if( !token ){
             return response.status(400).json({
                 message: userMessages.uidOrPasswordNotFound
             })
         }
 
-        const user = await User.find(form.uid);
+        const user = await User.find(inputs.uid);
         if( !user ){
             return response.status(400).json({
                 message: userMessages.uidNotExists
@@ -58,20 +61,25 @@ class UserController {
 
 
     async signup ({ request, response, auth }) {
-        const form = request.all()
+        const inputs = request.only([
+            'uid',
+            'password',
+            'full_name',
+            'phone'
+        ])
 
         /**
          * Valida los parámetros necesarios para crear el doctor.
          */
-        const formValidator = await userValidator.signup( form )
-        if ( formValidator.fails() ) {
+        const inputsValidator = await userValidator.signup( inputs )
+        if ( inputsValidator.fails() ) {
             return response.status(400).json({
-                message: formValidator.messages()[0].message,
-                validator: formValidator.messages()
+                message: inputsValidator.messages()[0].message,
+                validator: inputsValidator.messages()
             })
         }
 
-        const url = `http://search.sep.gob.mx/solr/cedulasCore/select?fl=*,score&q=${form.uid}&start=0&rows=100&facet=true&indent=on&wt=json`;
+        const url = `http://search.sep.gob.mx/solr/cedulasCore/select?fl=*,score&q=${inputs.uid}&start=0&rows=100&facet=true&indent=on&wt=json`;
         
         /**
          * Petición para obtener la información del doctor dado la cédula.
@@ -95,9 +103,9 @@ class UserController {
         //  * de la cédula.
         //  */
         // const sepNombreDoctor = `${infoCedula.nombre} ${infoCedula.paterno} ${infoCedula.materno}`;
-        // form.full_name = form.full_name.toUpperCase().trim()
+        // inputs.full_name = inputs.full_name.toUpperCase().trim()
 
-        // if( form.full_name != sepNombreDoctor ){
+        // if( inputs.full_name != sepNombreDoctor ){
         //     return response.status(400).json({
         //         message: "El nombre ingresado no coincide con la información de la cédula."
         //     })
@@ -107,9 +115,9 @@ class UserController {
         //  * Verifica que la institución ingresado coincida con la información
         //  * de la cédula.
         //  */
-        // form.institution = form.institution.toUpperCase().trim()
+        // inputs.institution = inputs.institution.toUpperCase().trim()
         
-        // if( form.institution != infoCedula.institucion ){
+        // if( inputs.institution != infoCedula.institucion ){
         //     return response.status(400).json({
         //         message: "La institución ingresado no coincide con la información de la cédula."
         //     })
@@ -123,8 +131,8 @@ class UserController {
         /**
          * Crea el usuario.
          */
-        form.full_name =  `${infoCedula.nombre} ${infoCedula.paterno} ${infoCedula.materno}`;
-        const user = await User.create(form)
+        inputs.full_name =  `${infoCedula.nombre} ${infoCedula.paterno} ${infoCedula.materno}`;
+        const user = await User.create(inputs)
 
         /**
          * Crea el doctor.
@@ -138,7 +146,7 @@ class UserController {
         /**
          * Genera el token de acceso.
          */
-        const token = await auth.attempt(form.uid, form.password)
+        const token = await auth.attempt(inputs.uid, inputs.password)
         const profileInfo = await Profile.get( user.id )
 
         return response.status(201).json({

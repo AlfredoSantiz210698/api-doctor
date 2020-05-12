@@ -24,10 +24,19 @@ class ValidatorExtendProvider extends ServiceProvider {
    */
   boot () {
     const Validator = use('Validator');
-    const { phone, image } = use ('App/Helpers/Common/Validators/ValidatorExtend')
+    const {
+      phone,
+      image,
+      appointmentDuration,
+      time,
+      existsInDB,
+    } = use ('App/Helpers/Common/Validators/ValidatorExtend')
     
     Validator.extend('phone', phone);
     Validator.extend('image', image);
+    Validator.extend('appointmentDuration', appointmentDuration);
+    Validator.extend('time', time);
+    Validator.extend('existsInDB', existsInDB);
   }
 }
 

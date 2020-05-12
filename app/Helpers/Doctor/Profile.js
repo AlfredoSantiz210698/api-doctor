@@ -5,7 +5,6 @@
 'use strict'
 
 const UserModel = use('App/Models/User')
-const DoctorModel = use('App/Models/Doctor/Doctor')
 
 class Profile {
 
@@ -16,7 +15,7 @@ class Profile {
     static async get(userId){
         return await UserModel.query().where({
             id: userId
-        }).with('doctorInfo.degree').first();
+        }).with('doctor.degree').first();
     }
     
 }

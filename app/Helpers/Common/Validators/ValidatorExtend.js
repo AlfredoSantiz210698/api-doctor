@@ -28,9 +28,61 @@ const image = async (data, field, message, args, get) => {
     }
 }
 
-  
+const appointmentDuration = async (data, field, message, args, get) => {
+    const value = get(data, field)
+    if (!value) {
+        return
+    }
+
+    try {
+        const appointmentDuration = [ 15, 20, 30, 60];
+        if( appointmentDuration.indexOf( parseFloat(value) ) == -1 ){
+            throw message
+        }
+    } catch (error) {
+        throw message
+    }
+    
+} 
+
+const time = async (data, field, message, args, get) => {
+    const value = get(data, field)
+    if (!value) {
+        return
+    }
+
+    const timeRegex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]?(:[0-5][0-9])?$/
+    if( !timeRegex.test(value) ){
+        throw message
+    }
+} 
+
+const existsInDB = async (data, field, message, args, get) => {
+    const value = get(data, field)
+    if (!value) {
+        return
+    }
+
+    const Database = use('Database');
+
+    let row = undefined;
+    try {
+        row = await Database.table(args[0]).where(args[1], value).first()
+    } catch (error) {
+        throw "Error al consultar la información en la base de datos."
+    }
+
+    if( !row ) {
+        throw message
+    }
+
+} 
+
 
 module.exports = {
     phone,
-    image
+    image,
+    appointmentDuration,
+    time,
+    existsInDB
 }
