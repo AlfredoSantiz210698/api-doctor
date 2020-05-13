@@ -75,14 +75,25 @@ const existsInDB = async (data, field, message, args, get) => {
     if( !row ) {
         throw message
     }
-
 } 
 
+const dateYYYYMMDD = async (data, field, message, args, get) => {
+    const value = get(data, field)
+    if (!value) {
+        return
+    }
+
+    const dateRegex = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/
+    if( !dateRegex.test(value) ){
+        throw message
+    }
+} 
 
 module.exports = {
     phone,
     image,
     appointmentDuration,
     time,
-    existsInDB
+    existsInDB,
+    dateYYYYMMDD
 }

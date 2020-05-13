@@ -28,10 +28,8 @@ class DoctorController {
         const updatedDoctor = await Doctor.update(auth.user.id, inputs);
 
         return response.status(200).json({
-            ...{
-                message: doctorMessages.updatedSuccessful
-            },
-            ...updatedDoctor.toJSON()
+            message: doctorMessages.updatedSuccessful,
+            updatedDoctor: updatedDoctor
         })
     }
 

@@ -30,6 +30,7 @@ class ValidatorExtendProvider extends ServiceProvider {
       appointmentDuration,
       time,
       existsInDB,
+      dateYYYYMMDD
     } = use ('App/Helpers/Common/Validators/ValidatorExtend')
     
     Validator.extend('phone', phone);
@@ -37,6 +38,7 @@ class ValidatorExtendProvider extends ServiceProvider {
     Validator.extend('appointmentDuration', appointmentDuration);
     Validator.extend('time', time);
     Validator.extend('existsInDB', existsInDB);
+    Validator.extend('dateYYYYMMDD', dateYYYYMMDD);
   }
 }
 

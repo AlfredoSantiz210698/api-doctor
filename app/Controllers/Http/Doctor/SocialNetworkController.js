@@ -49,10 +49,8 @@ class SocialNetworkController {
         const socialNetwork = await SocialNetwork.create( inputs )
 
         return response.status(201).json({
-            ...{
-                message: socialNetworkMessages.createSuccessful
-            },
-            ...socialNetwork.toJSON()
+            message: socialNetworkMessages.createSuccessful,
+            socialNetwork: socialNetwork
         })
     }
 

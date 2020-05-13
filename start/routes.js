@@ -72,6 +72,13 @@ Route.group(() => {
   Route.post('/clinics', 'Doctor/ClinicController.create')
   Route.put('/clinics', 'Doctor/ClinicController.update')
 
+  /**
+   * Citas.
+   */
+  Route.get('/appointments', 'Doctor/AppointmentController.get')
+  Route.post('/appointments', 'Doctor/AppointmentController.create')
+
+
 }).prefix('api/v1/doctors').middleware(['doctor', 'auth:jwt'])
 
 

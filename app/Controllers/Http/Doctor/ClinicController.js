@@ -63,10 +63,8 @@ class ClinicController {
         const clinic = await Clinic.create(inputs);
         
         return response.status(201).json({
-            ...{
-                message: clinicMessages.created
-            },
-            ...clinic.toJSON()
+            message: clinicMessages.created,
+            clinic: clinic
         })
     }
 
@@ -106,10 +104,8 @@ class ClinicController {
         const clinicUpdated = await Clinic.update(clinic.id, inputs)
 
         return response.status(200).json({
-            ...{
-                message: clinicMessages.updated
-            },
-            ...clinicUpdated.toJSON()
+            message: clinicMessages.updated,
+            clinicUpdated: clinicUpdated
         })
     }
 }
