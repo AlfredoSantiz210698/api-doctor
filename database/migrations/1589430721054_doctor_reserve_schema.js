@@ -11,7 +11,8 @@ class ReserveSchema extends Schema {
       table.time ('start').nullable()
       table.time ('end').nullable()
       
-      table.integer('doctor_id').notNullable().unsigned().index('doctor_id')
+      // table.integer('doctor_id').notNullable().unsigned().index()
+      table.integer('doctor_id').unsigned()
       table.foreign('doctor_id').references('doctors.id')
       table.timestamps()
     })

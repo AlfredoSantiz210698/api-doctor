@@ -17,7 +17,8 @@ class ClinicSchema extends Schema {
       table.integer('appointment_duration').notNullable()
       table.text('payment_methods').nullable()
       
-      table.integer('doctor_id').notNullable().unsigned().index('doctor_id')
+      // table.integer('doctor_id').notNullable().unsigned().index('doctor_id')
+      table.integer('doctor_id').unsigned()
       table.foreign('doctor_id').references('doctors.id')
 
       table.timestamps()

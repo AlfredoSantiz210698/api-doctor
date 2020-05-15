@@ -11,7 +11,8 @@ class SocialNetworkSchema extends Schema {
       table.string('twitter', 150).nullable()
       table.string('instagram', 150).nullable()
       
-      table.integer('doctor_id').notNullable().unsigned().index('doctor_id')
+      // table.integer('doctor_id').notNullable().unsigned().index('doctor_id')
+      table.integer('doctor_id').unsigned()
       table.foreign('doctor_id').references('doctors.id')
       
       table.timestamps()
