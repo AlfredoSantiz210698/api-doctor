@@ -23,6 +23,11 @@ const Route = use('Route')
  * | .__/ \__,_|_.__/|_|_|\___|
  * |_|                         
  */
+
+Route.get('/', () => {
+  return { greeting: 'Hello world.' }
+})
+
 Route.group(() => {
   Route.get('/', () => {
     return { greeting: 'Hello world from api doctor.' }
@@ -150,8 +155,5 @@ Route.group(() => {
    */
   Route.get('/appointments', 'Patient/AppointmentController.get')
   Route.post('/appointments', 'Patient/AppointmentController.create')
-
-  
-
 
 }).prefix('api/v1/patients').middleware(['patient', 'auth:jwt'])
