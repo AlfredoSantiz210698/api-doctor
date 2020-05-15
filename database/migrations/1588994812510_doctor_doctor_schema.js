@@ -11,7 +11,8 @@ class DoctorSchema extends Schema {
       table.string('institution', 150).nullable()
       table.text('semblance').nullable()
 
-      table.integer('user_id').notNullable().unsigned().index('user_id')
+      // table.integer('user_id').notNullable().unsigned().index('user_id')
+      table.integer('user_id').unsigned()
       table.foreign('user_id').references('users.id')
 
       table.integer('degree_id').notNullable().unsigned().index('degree_id')
