@@ -22,7 +22,7 @@ class Doctor {
 
     if( user.role_id != 1 ){
       return response.status(400).json({
-        message: 'Acceso denegado, exclusivo solo para doctores.',
+        message: 'Acceso denegado, exclusivo para doctores.',
       })
     }
 

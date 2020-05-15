@@ -9,8 +9,27 @@ const Appointment = use('App/Helpers/Doctor/Appointment')
 const PatientUser = use('App/Helpers/Patient/User')
 
 class AppointmentController {
+    
+    async getByDoctorIdDate ({ request, params, response, auth }) {
+        const inputs = request.only([ 'date' ])
 
-    async get ({ request, params, response, auth }) {
+        const inputsValidator = await appointmentValidator.getByDate( inputs )
+        if ( inputsValidator.fails() ) {
+            return response.status(400).json({
+                message: inputsValidator.messages()[0].message,
+                validator: inputsValidator.messages()
+            })
+        }  
+
+        const appointments = await Appointment.getByDate(params.id, inputs.date);
+
+        return response.status(200).json({
+            message: appointmentMessages.getByDate(inputs.date),
+            appointments: appointments
+        })
+    }
+
+    async getByDate ({ request, params, response, auth }) {
         const inputs = request.only([ 'date' ])
 
         const inputsValidator = await appointmentValidator.getByDate( inputs )
@@ -22,9 +41,9 @@ class AppointmentController {
         }  
 
         const doctor = await Doctor.findByUserId(auth.user.id)
-        const appointments = await Appointment.getByDate(doctor.id, inputs.date);
+        const appointments = await Appointment.getAllByDate(doctor.id, inputs.date);
 
-        return response.status(201).json({
+        return response.status(200).json({
             message: appointmentMessages.getByDate(inputs.date),
             appointments: appointments
         })

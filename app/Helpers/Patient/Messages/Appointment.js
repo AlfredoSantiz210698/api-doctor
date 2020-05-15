@@ -8,12 +8,12 @@ const getByDate = (date) => {
     return `Citas del ${date}.`
 }
 
-// const exists = 'Solo tienes permitido crear una clínica.'
+const get = 'Citas.'
 // const notFound = 'Clínica inexistente, revisa que hayas creado alguno.'
 const created = 'Cita creado exitosamente.'
 
 module.exports = {
-    // exists,
+    get,
     created,
     // notFound,
     getByDate

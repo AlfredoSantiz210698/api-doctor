@@ -22,7 +22,7 @@ class Patient {
     
     if( user.role_id != 2 ){
       return response.status(400).json({
-        message: 'Acceso denegado, exclusivo solo para pacientes.',
+        message: 'Acceso denegado, exclusivo para pacientes.',
       })
     }
     await next()

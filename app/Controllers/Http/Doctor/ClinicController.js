@@ -12,6 +12,21 @@ const Doctor = use('App/Helpers/Doctor/Doctor')
 
 class ClinicController {
     
+    async getByDoctorId ({ params, response }) {
+
+        const clinic = await Clinic.findByDoctorId(params.id)
+        if( !clinic ){
+            return response.status(404).json({
+                message: clinicMessages.notFound
+            })
+        }
+        
+        return response.status(200).json({
+            message: clinicMessages.get,
+            clinic: clinic
+        })
+    }
+
     async create ({ request, response, auth }) {
         const inputs = request.only([
             'name',

@@ -8,12 +8,22 @@ const DegreeModel = use('App/Models/Doctor/Degree')
 
 class Degree {
 
+    static async getAll(){
+        return await DegreeModel.query().orderBy('name', 'asc').fetch()
+    }
+
     /**
-     * Busca un degree.
      * @param {String} degree 
      */
-    static async find(degree){
+    static async findByName(degree){
         return await DegreeModel.query().where('name', degree).first() //fetch
+    }
+
+    /**
+     * @param {String} degree 
+     */
+    static async findById(degreeId){
+        return await DegreeModel.find(degreeId)
     }
 
     /**

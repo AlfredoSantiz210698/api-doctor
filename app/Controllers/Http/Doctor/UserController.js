@@ -123,7 +123,7 @@ class UserController {
         //     })
         // }
 
-        let degree = await Degree.find(infoCedula.titulo);
+        let degree = await Degree.findByName(infoCedula.titulo);
         if( !degree ){
             degree = await Degree.create(infoCedula.titulo);
         }

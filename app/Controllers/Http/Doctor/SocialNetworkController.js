@@ -22,13 +22,26 @@ class SocialNetworkController {
         }
         
         return response.status(200).json({
-            ...{
-                message: socialNetworkMessages.get
-            },
-            ...socialNetwork.toJSON()
+            message: socialNetworkMessages.get,
+            socialNetwork: socialNetwork
         })
     }
 
+    async getByDoctorId ({ params, response }) {
+
+        const socialNetwork = await SocialNetwork.findByDoctorId(params.id)
+        if( !socialNetwork ){
+            return response.status(404).json({
+                message: socialNetworkMessages.notFound
+            })
+        }
+        
+        return response.status(200).json({
+            message: socialNetworkMessages.get,
+            socialNetwork: socialNetwork
+        })
+    }
+    
     async create ({ request, response, auth }) {
         const inputs = request.only([
             'facebook',
@@ -65,17 +78,15 @@ class SocialNetworkController {
         const socialNetwork = await SocialNetwork.findByDoctorId(doctor.id)
         if( !socialNetwork ){
             return response.status(404).json({
-                message: socialNetworkMessages.notFound
+                message: socialNetworkMessages.noRegistered
             })
         }
 
         const socialNetworkUpdated = await SocialNetwork.update(socialNetwork.id, inputs )
 
         return response.status(200).json({
-            ...{
-                message: socialNetworkMessages.updated
-            },
-            ...socialNetworkUpdated.toJSON()
+            message: socialNetworkMessages.updated,
+            socialNetwork: socialNetworkUpdated
         })
     }
 

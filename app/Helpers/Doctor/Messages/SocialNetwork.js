@@ -18,7 +18,8 @@
 
 const createSuccessful = 'Redes sociales creado exitosamente.'
 const get = 'Redes sociales.'
-const notFound = 'Aún no tienes redes sociales registrados.'
+const notFound = 'Redes sociales inexistentes.'
+const noRegistered = 'Aún no tienes redes sociales registrados.'
 const exists = 'Registro de redes sociales existente.'
 const updated = 'Redes sociales actualizado exitosamente.'
 
@@ -27,5 +28,6 @@ module.exports = {
     get,
     notFound,
     exists,
-    updated
+    updated,
+    noRegistered
 }

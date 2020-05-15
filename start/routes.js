@@ -75,9 +75,14 @@ Route.group(() => {
   /**
    * Citas.
    */
-  Route.get('/appointments', 'Doctor/AppointmentController.get')
+  Route.get('/appointments', 'Doctor/AppointmentController.getByDate')
   Route.post('/appointments', 'Doctor/AppointmentController.create')
 
+  /**
+   * Reservas
+   */
+  Route.get('/reserves', 'Doctor/ReserveController.get')
+  Route.post('/reserves', 'Doctor/ReserveController.create')
 
 }).prefix('api/v1/doctors').middleware(['doctor', 'auth:jwt'])
 
@@ -91,14 +96,45 @@ Route.group(() => {
  * |_|                                   
  * 
  * Endpoints únicamente accesibles para los pacientes (role_id = 2)
- * 
  */
 
-// Route.group(() => {
-//   // Route.get('/', 'Doctor/DoctorController.getAll')
-// }).prefix('api/v1/doctors').middleware(['patient', 'auth:jwt'])
+ /**
+  * Doctores.
+  */
+Route.group(() => {
+  
+  /**
+   * Grados.
+   */
+  Route.get('/degrees', 'Doctor/DegreeController.get')
+  Route.get('/degrees/search/:id', 'Doctor/DoctorController.getByDegree')
+
+  /**
+   * Clínica.
+   */
+  Route.get('/:id/clinics', 'Doctor/ClinicController.getByDoctorId')
+
+  /**
+   * Citas.
+   */
+  Route.get('/:id/appointments', 'Doctor/AppointmentController.getByDoctorIdDate')
+
+  /**
+   * Reservas
+   */
+  Route.get('/:id/reserves', 'Doctor/ReserveController.getByDoctorIdDate')
+
+  /**
+   * Redes sociales.
+   */
+  Route.get('/:id/social_networks', 'Doctor/SocialNetworkController.getByDoctorId')
+
+}).prefix('api/v1/doctors').middleware(['patient', 'auth:jwt'])
 
 
+/**
+ * Pacientes.
+ */
 Route.group(() => {
   Route.get('/msg', () => {
     return { message: 'Patient' }
@@ -107,6 +143,15 @@ Route.group(() => {
   /**
    * Perfil.
    */
-  Route.get('/profile', 'Patient/ProfileController.get')  
+  Route.get('/profile', 'Patient/ProfileController.get')
+  
+  /**
+   * Citas.
+   */
+  Route.get('/appointments', 'Patient/AppointmentController.get')
+  Route.post('/appointments', 'Patient/AppointmentController.create')
+
+  
+
 
 }).prefix('api/v1/patients').middleware(['patient', 'auth:jwt'])

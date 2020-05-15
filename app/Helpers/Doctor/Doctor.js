@@ -8,6 +8,18 @@ const DoctorModel = use('App/Models/Doctor/Doctor')
 
 class Doctor {
 
+    
+    
+    static async getByDegree( degreeId ){
+        return await DoctorModel.query().where({
+            degree_id: degreeId
+        }).with('degree').with('user', (user)=>{
+            user.select('id', 'full_name', 'phone')
+        }).with('clinic', (clinic)=>{
+            clinic.select('latitude', 'longitude', 'doctor_id')
+        }).fetch();
+    }
+
     static async findByUserId( userId ){
         return await DoctorModel.findBy('user_id', userId);
     }

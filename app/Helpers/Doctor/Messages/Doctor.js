@@ -18,6 +18,10 @@
 
 const updatedSuccessful = 'Información actualizado exitosamente.'
 
+const getByDegree = (degree) => {
+    return `Doctores del grado ${degree}.`
+}
 module.exports = {
     updatedSuccessful,
+    getByDegree
 }

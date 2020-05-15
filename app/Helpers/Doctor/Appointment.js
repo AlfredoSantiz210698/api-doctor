@@ -12,6 +12,13 @@ class Appointment {
         return await AppointmentModel.query().where({
             doctor_id: doctorId,
             date: date
+        }).select('id', 'date', 'start', 'end', 'doctor_id').fetch()
+    }
+
+    static async getAllByDate(doctorId, date) {
+        return await AppointmentModel.query().where({
+            doctor_id: doctorId,
+            date: date
         }).with('patient').fetch()
     }
 
