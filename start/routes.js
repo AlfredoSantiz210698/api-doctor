@@ -25,7 +25,7 @@ const Route = use('Route')
  */
 
 Route.get('/', () => {
-  return { greeting: 'Hello world.' }
+  return { greeting: 'Hello woorld.' }
 })
 
 Route.group(() => {
