@@ -12,17 +12,12 @@
 
 /** @type {import('@adonisjs/lucid/src/Factory')} */
 const Factory = use('Factory')
-const Rol = use('App/Models/Rol')
 
 class RolSeeder {
   async run () {
-    await Rol.create({
-      name: "Doctor"
-    })
+    await Factory.model('App/Models/Rol').create({rol: "Doctor" }) 
+    await Factory.model('App/Models/Rol').create({rol: "Paciente" }) 
 
-    await Rol.create({
-      name: "Paciente"
-    })
   }
 }
 
